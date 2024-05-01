@@ -15,17 +15,19 @@ AAuraPlayerController::AAuraPlayerController()
 void AAuraPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();
 }
 
 void AAuraPlayerController::CursorTrace()
 {
-	FHitResult CursoeHit;
-	GetHitResultUnderCursor(ECC_Visibility, false, CursoeHit);
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 
-	if (!CursoeHit.bBlockingHit) return;
+	if (!CursorHit.bBlockingHit) return;
 
 	LastActor  = ThisActor;
-	ThisActor = Cast<IEnemyInterface>(CursoeHit.GetActor());
+	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
 
 	/**
 	 * Line trace form cursor. There are serveral scenarios:
@@ -46,7 +48,7 @@ void AAuraPlayerController::CursorTrace()
 		if (ThisActor != nullptr)
 		{
 			// Case B
-			LastActor->HighlightActor();
+			ThisActor->HighlightActor();
 		}
 		else
 		{
